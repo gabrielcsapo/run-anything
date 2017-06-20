@@ -1,11 +1,7 @@
 {
   "name": "run-anything",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "configuration based application development for IOT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gabrielcsapo/run-anything.git"
@@ -15,5 +11,15 @@
   "bugs": {
     "url": "https://github.com/gabrielcsapo/run-anything/issues"
   },
-  "homepage": "https://github.com/gabrielcsapo/run-anything#readme"
+  "homepage": "https://github.com/gabrielcsapo/run-anything#readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/**.js"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
 }
