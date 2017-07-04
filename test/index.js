@@ -1,5 +1,8 @@
 const test = require('tape');
 const net = require('net');
+const path = require('path');
+const spawn = require('child_process').spawn;
+
 const run = require('../index');
 
 test('run-anything', (t) => {
@@ -78,4 +81,39 @@ test('run-anything', (t) => {
         });
     });
 
+    t.test('executable should run example', (t) => {
+        const proc = spawn('./bin/index.js', ['--config', './test/fixtures/lights.js'], {
+            cwd: path.resolve(__dirname, '..')
+        });
+
+        proc.stdout.on('data', (data) => {
+            const output = data.toString('utf8');
+
+            if(output.indexOf('run-anything started') > -1) {
+                const port = output.substring(output.length - 6, output.length);
+                const client = new net.Socket();
+                client.connect(port, '127.0.0.1', () => {
+                	client.write('help');
+                });
+
+                client.on('data', (data) => {
+                    t.deepEqual(JSON.parse(data.toString()), ["on [id]","off [id]","list","help"]);
+                    client.destroy();
+                    proc.kill();
+                });
+
+                client.on('close', () => {
+                    t.end();
+                });
+            }
+        });
+
+        proc.stderr.on('data', (data) => {
+          console.log(`stderr: ${data}`);
+        });
+
+        proc.on('close', (code) => {
+          console.log(`child process exited with code ${code}`);
+        });
+    });
 });
