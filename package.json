@@ -1,7 +1,7 @@
 {
   "name": "run-anything",
   "version": "0.0.0",
-  "description": "configuration based application development for IOT",
+  "description": "🏃 configuration based application development for IOT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gabrielcsapo/run-anything.git"
@@ -17,9 +17,10 @@
     "test": "tape test/**.js"
   },
   "devDependencies": {
-    "tape": "^4.6.3"
+    "tape": "^4.7.0"
   },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.10.0",
+    "debug": "^2.6.8"
   }
 }

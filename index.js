@@ -1,32 +1,29 @@
 const net = require('net');
+const debug = require('debug')('run-anything');
+
+const Application = require('./lib/application');
+const parse = require('./lib/parse');
 
 module.exports = (applications, callback) => {
-
+    applications = applications.map((application) => Application(application));
+    
     const server = net.createServer((socket) => {
-        socket.on('data', (data) => {
-            const args = data.toString('utf8').trim().split(/[ ,|]+/)
-            applications.forEach((application) => {
-                application.commands.forEach((command) => {
-                    const check = command.split(/[ ,|]+/);
-                    const func = check[0];
-                    if(func === args[0] && check.length === args.length) {
-                        const paramaters = args.map((a) => a.replace('[', '').replace(']', ''));
+        const address = socket.address();
 
-                        paramaters[0] = socket;
-                        application[func].apply(null, paramaters);
-                    }
-                });
-            });
+        debug(`socket connected at ${address.address} port ${address.port}`)
+        socket.on('data', (data) => {
+            parse(applications, data, socket);
         });
         socket.on('end', () => {
-          console.log('disconnected from server');
+            debug(`socket disconnected at ${address.address} port ${address.port}`)
         });
     }).on('error', (err) => {
       throw err;
     });
 
     return server.listen(() => {
-      console.log('opened server on', server.address());
+      debug(`server opened at ${server.address().port}`);
+
       callback(server);
     });
 

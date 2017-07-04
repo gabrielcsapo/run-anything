@@ -1,4 +1,6 @@
-module.exports = {
+const run = require('../index');
+
+run([{
     name: 'lights',
     commands: {
         'on [id]': (socket, id) => {
@@ -11,4 +13,10 @@ module.exports = {
             socket.write(`12356, 12357, 12341, 934123`);
         }
     }
-};
+}], (server) => {
+    console.log(`run-anything running at port ${server.address().port}`)
+
+    process.on('exit', () => {
+        server.close();
+    });
+});
