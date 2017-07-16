@@ -1,5 +1,7 @@
 # run-anywhere
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/gabrielcsapo/run-anything.svg)](https://greenkeeper.io/)
+
 > 🏃 configuration based application development for IOT
 
 ## Installation
