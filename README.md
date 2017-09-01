@@ -47,9 +47,3 @@ Run([{
 ## Direction
 
 What if building a IOT device could automatically generate a UI. Where you could ask a device for the functions and state of the device and it would respond with it.
-
-## TODO
-
-- [ ] document and outline a data format that could be used
-- [ ] create a javascript example of generating a interacting UI that could read from an example IOT device
-- [ ] add functionality to extend an application to emit devices and their interfaces and state
