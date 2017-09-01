@@ -14,13 +14,17 @@
   "homepage": "https://github.com/gabrielcsapo/run-anything#readme",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/**.js"
+    "lint": "eslint .",
+    "test": "tape test",
+    "coverage": "tap test --coverage --coverage-report=lcov"
   },
   "devDependencies": {
-    "tape": "^4.7.0"
+    "eslint": "^4.5.0",
+    "tap": "^10.7.2",
+    "tape": "^4.8.0"
   },
   "dependencies": {
-    "commander": "^2.10.0",
-    "debug": "^2.6.8"
+    "commander": "^2.11.0",
+    "debug": "^3.0.1"
   }
 }

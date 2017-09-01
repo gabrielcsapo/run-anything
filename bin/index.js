@@ -12,5 +12,5 @@ program
 
 const config = require(path.resolve(process.cwd(), program.config));
 run([config], (server) => {
-    console.log(`run-anything started on ${server.address().port}`);
+  console.log(`run-anything started on ${server.address().port}`); // eslint-disable-line
 });
