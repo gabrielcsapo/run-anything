@@ -2,7 +2,7 @@ const net = require('net');
 const debug = require('debug')('run-anything');
 
 const Application = require('./lib/application');
-const parse = require('./lib/parse');
+const { parseCommand } = require('./lib/util');
 
 module.exports.State = function State(initialState) {
   let state = Object.assign(initialState, {});
@@ -28,7 +28,25 @@ module.exports.Run = (applications, callback) => {
 
     debug(`socket connected at ${address.address} port ${address.port}`)
     socket.on('data', (data) => {
-      parse(applications, data, socket);
+      let parsed = false;
+      const input = data.toString('utf8');
+
+      applications.forEach((application) => {
+        Object.keys(application.commands).forEach((key) => {
+          const command = application.commands[key];
+
+          parseCommand(input, key, (error, func, paramaters) => {
+            if(func && paramaters) {
+              parsed = true;
+              paramaters[0] = socket;
+              command.apply(application, paramaters);
+            }
+          });
+        });
+      });
+      if(!parsed) {
+        socket.write('command not found')
+      }
     });
     socket.on('end', () => {
       debug(`socket disconnected at ${address.address} port ${address.port}`)
