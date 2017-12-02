@@ -2,6 +2,14 @@
 
 > 🏃 configuration based application development for IOT
 
+[![Npm Version](https://img.shields.io/npm/v/run-anything.svg)](https://www.npmjs.com/package/run-anything)
+[![Build Status](https://travis-ci.org/gabrielcsapo/run-anything.svg?branch=master)](https://travis-ci.org/gabrielcsapo/run-anything)
+[![Coverage Status](https://lcov-server.gabrielcsapo.com/badge/github%2Ecom/gabrielcsapo/run-anything.svg)](https://lcov-server.gabrielcsapo.com/coverage/github%2Ecom/gabrielcsapo/run-anything)
+[![Dependency Status](https://starbuck.gabrielcsapo.com/badge/github/gabrielcsapo/run-anything/status.svg)](https://starbuck.gabrielcsapo.com/github/gabrielcsapo/run-anything)
+[![devDependency Status](https://starbuck.gabrielcsapo.com/badge/github/gabrielcsapo/run-anything/dev-status.svg)](https://starbuck.gabrielcsapo.com/github/gabrielcsapo/run-anything#info=devDependencies)
+[![npm](https://img.shields.io/npm/dt/run-anything.svg)]()
+[![npm](https://img.shields.io/npm/dm/run-anything.svg)]()
+
 ## Installation
 
 ```
@@ -10,7 +18,7 @@ npm install run-anywhere
 
 ## Usage
 
-> to get more information use `DEBUG=run-anything` before starting the process 
+> to get more information use `DEBUG=run-anything` before starting the process
 
 > programmatic usage of run-anything
 
