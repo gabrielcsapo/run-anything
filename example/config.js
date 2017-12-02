@@ -1,6 +1,4 @@
-const { Run } = require('../index');
-
-const instance = new Run([{
+module.exports = {
   state: {
     on: 0,
     color: '#efefef'
@@ -23,12 +21,4 @@ const instance = new Run([{
       socket.write(`changed color of light to ${color}`)
     }
   }
-}]);
-
-instance.start(() => {
-  console.log(`run-anything running at port ${instance.port}`); // eslint-disable-line
-
-  process.on('exit', () => {
-    instance.close();
-  });
-});
+};

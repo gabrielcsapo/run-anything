@@ -1,17 +1,17 @@
 const test = require('tape');
 const net = require('net');
 
-const { Run, State } = require('../index');
+const { Run } = require('../index');
 
-test('run-anything', (t) => {
+test('Run', (t) => {
   t.plan(3);
 
   t.test('tes basic functionality', (t) => {
-    Run([{
-      state: new State({
+    const instance = new Run([{
+      state: {
         on: 0,
         color: '#efefef'
-      }),
+      },
       name: 'light',
       commands: {
         'on': function(socket) {
@@ -30,16 +30,17 @@ test('run-anything', (t) => {
           socket.write(`changed color of light to ${color}`)
         }
       }
-    }], (server) => {
+    }])
+    instance.start(() => {
       const client = new net.Socket();
-      client.connect(server.address().port, '127.0.0.1', () => {
+      client.connect(instance.port, '127.0.0.1', () => {
         client.write('on');
       });
 
       client.on('data', (data) => {
         t.equal(data.toString('utf8'), 'turned light on');
         client.destroy();
-        server.close();
+        instance.close();
       });
 
       client.on('close', () => {
@@ -49,11 +50,11 @@ test('run-anything', (t) => {
   });
 
   t.test('test helper function on application (help)', (t) => {
-    Run([{
-      state: new State({
+    const instance = new Run([{
+      state: {
         on: 0,
         color: '#efefef'
-      }),
+      },
       name: 'light',
       commands: {
         'on': function(socket) {
@@ -72,16 +73,17 @@ test('run-anything', (t) => {
           socket.write(`changed color of light to ${color}`)
         }
       }
-    }], (server) => {
+    }]);
+    instance.start(() => {
       const client = new net.Socket();
-      client.connect(server.address().port, '127.0.0.1', () => {
+      client.connect(instance.port, '127.0.0.1', () => {
         client.write('help');
       });
 
       client.on('data', (data) => {
-        t.deepEqual(JSON.parse(data.toString()), ['on', 'off', 'color [color]', 'help', 'state']);
+        t.deepEqual(JSON.parse(data.toString()),  [ 'help', 'state', 'on', 'off', 'color [color]' ]);
         client.destroy();
-        server.close();
+        instance.close();
       });
 
       client.on('close', () => {
@@ -91,13 +93,11 @@ test('run-anything', (t) => {
   });
 
   t.test('test state functionality', (t) => {
-    let state = new State({
-      on: 0,
-      color: '#efefef'
-    });
-
-    Run([{
-      state,
+    const instance = new Run([{
+      state: {
+        on: 0,
+        color: '#efefef'
+      },
       name: 'light',
       commands: {
         'on': function(socket) {
@@ -116,7 +116,8 @@ test('run-anything', (t) => {
           socket.write(`changed color of light to ${color}`)
         }
       }
-    }], (server) => {
+    }]);
+    instance.start(() => {
       let received = 0;
       let expect = [
         '{"on":0,"color":"#efefef"}',
@@ -130,7 +131,7 @@ test('run-anything', (t) => {
       ];
 
       const client = new net.Socket();
-      client.connect(server.address().port, '127.0.0.1', () => {
+      client.connect(instance.port, '127.0.0.1', () => {
         client.write('state');
       });
 
@@ -143,7 +144,7 @@ test('run-anything', (t) => {
 
         if(expect.length == received) {
           client.destroy();
-          server.close();
+          instance.close();
         }
       });
 

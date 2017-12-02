@@ -1,16 +1,59 @@
 #!/usr/bin/env node
 
-const program = require('commander');
 const path = require('path');
 
-const run = require('../index');
+const { Run } = require('../index');
 
-program
-  .version(require('../package.json'))
-  .option('-c, --config <config>', 'A path to a config file that points to entry points for run-anywhere configs')
-  .parse(process.argv);
+const args = process.argv.slice(2);
 
-const config = require(path.resolve(process.cwd(), program.config));
-run([config], (server) => {
-  console.log(`run-anything started on ${server.address().port}`); // eslint-disable-line
-});
+let program = {};
+
+args.forEach((a, i) => {
+  switch(a) {
+  case '-v':
+  case '--version':
+      console.log(require('../package.json').version); // eslint-disable-line
+    break;
+  case '-c':
+  case '--config':
+    if(args[i + 1]) {
+      program.config = args[i + 1];
+    }
+    break;
+  case '-p':
+  case '--port':
+    program.port = args[i + 1];
+    break;
+  case 'help':
+  case '-h':
+  case '--help':
+        console.log(`` + // eslint-disable-line
+`
+Usage: run-anything [options]
+
+Command:
+  -h, --help, help     outputs this screen and exists the process
+
+Options:
+  -p, --port [port]     overrides the randomized port for serving application
+  -c, --config [path]   the config that is to be run
+
+`);
+    process.exit(0);
+    break;
+  }
+})
+
+if(program.config) {
+  const config = require(path.resolve(process.cwd(), args[1]));
+  const instance = new Run([config], {
+    port: program.port
+  });
+  instance.start((error) => {
+    if(error) {
+      console.log(`run-anything failed to start with error \n ${error.toString()}`); // eslint-disable-line
+    } else {
+      console.log(`run-anything started on ${instance.port}`); // eslint-disable-line
+    }
+  });
+}

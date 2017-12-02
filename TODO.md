@@ -1,3 +1,2 @@
 - [ ] document and outline a data format that could be used
 - [ ] create a javascript example of generating a interacting UI that could read from an example IOT device
-- [ ] add functionality to extend an application to emit devices and their interfaces and state
